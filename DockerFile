@@ -16,12 +16,6 @@ COPY . .
 # Собираем приложение
 RUN npm run build
 
-# --- Фаза продакшн-сервера ---
-FROM nginx:latest
-
-# Копируем собранное приложение в папку Nginx
-COPY --from=builder /app/build /usr/share/nginx/html
-
 # Открываем порт
 EXPOSE 80
 
