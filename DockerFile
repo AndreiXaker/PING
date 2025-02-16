@@ -22,9 +22,6 @@ FROM nginx:latest
 # Копируем собранное приложение в папку Nginx
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Копируем файл конфигурации Nginx (необязательно)
-COPY nginx.conf /etc/nginx/nginx.conf
-
 # Открываем порт
 EXPOSE 80
 
