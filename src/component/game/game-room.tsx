@@ -1,5 +1,4 @@
 import { Card, Space, Typography } from "antd";
-import { Timer } from "lucide-react";
 import { useState, useEffect } from "react";
 import FlippingNumbers from "./Players/flipDigit";
 import MagicCard from "./Card/magicCard";
