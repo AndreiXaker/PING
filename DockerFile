@@ -1,22 +1,31 @@
-# Используем официальный образ Node.js
+# Шаг 1: Сборка React-приложения
 FROM node:18 AS builder
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем файлы package.json и package-lock.json (если есть)
+# Копируем файлы package.json и package-lock.json
 COPY package*.json ./
 
 # Устанавливаем зависимости
 RUN npm install
 
-# Копируем исходный код
+# Копируем весь код
 COPY . .
 
 # Собираем приложение
 RUN npm run build
 
-# Открываем порт
+# Шаг 2: Настройка Nginx для раздачи собранного приложения
+FROM nginx:alpine
+
+# Копируем билд React-приложения в директорию Nginx
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Копируем конфигурацию Nginx (опционально)
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Открываем порт 80
 EXPOSE 80
 
 # Запускаем Nginx
