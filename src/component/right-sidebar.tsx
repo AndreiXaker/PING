@@ -1,13 +1,20 @@
 import { Button } from "./ui/Button";
+import { useBalance } from "../hooks/useBalance";
 
-export default function RightSidebar() {
+interface RightSidebarProps {
+  openModal: () => void;
+}
+
+export default function RightSidebar({ openModal }: RightSidebarProps) {
+  const { data, error, isLoading } = useBalance();
+  console.log('Balance data:', data);
   const cards = [
     { title: "Ваш баланс", hasButton: true },
-    { title: "Статистика", hasButton: true },
-    { title: "Партнерская программа", hasButton: true },
+    { title: "Статистика", hasButton: false },
+    { title: "Партнерская программа", hasButton: false },
     { title: "Битва кланов", hasButton: false },
     { title: "Чемпионат", hasButton: false },
-    { title : "Настройка автобота", hasButton: false },
+    { title: "Настройка автобота", hasButton: false },
   ];
 
   return (
@@ -17,11 +24,27 @@ export default function RightSidebar() {
           <div key={index} className="rounded-lg bg-gray-800/50 p-4 mr-7">
             <div className="space-y-2 flex flex-col items-center">
               <p className="text-lg text-white font-bold text-center">{card.title}</p>
-              {card.hasButton ? (
-                <Button className="text-lg">LOGIN</Button>
-              ) : (
-                <p className="text-gray-400 text-sm">Coming soon</p>
+              {card.title === "Ваш баланс" && (
+                <div>
+                  {isLoading ? (
+                    <p className="text-white">Загрузка...</p>
+                  ) : error ? (
+                    <p className="text-red-500">Ошибка загрузки баланса</p>
+                  ) : (
+                    <div>
+                      {data?.balances.map((balance, index) => (
+                        <p key={index} className="text-white">
+                          {balance.coin}: {balance.amount}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  <Button className="text-lg" onClick={openModal}>
+                    Пополнить баланс
+                  </Button>
+                </div>
               )}
+              {!card.hasButton && <p className="text-gray-400 text-sm">Coming soon</p>}
             </div>
           </div>
         ))}

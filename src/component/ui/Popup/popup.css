@@ -53,25 +53,26 @@
   padding-top: 50px;
   padding-right: 0;
   padding-left: 0;
-  
   z-index: 3;
 }
 .roadmap-container .timeline-list .timeline-item-block {
-  width: 350px;
+  width: 355px;
   margin-bottom: 50px;
   float: left;
   text-align: left;
 }
 .roadmap-container .timeline-list .timeline-item-block17q4 {
-  margin-top: 50px;
+  margin-top: 0px;
 }
 .roadmap-container .timeline-list .timeline-item-block18q2 {
   margin-top: 50px;
 }
 .roadmap-container .timeline-list .timeline-item-block .timeline-item-time {
   position: relative;
-  width: 320px;
+  width: 350px;
   min-height: 36px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-bottom: 0 solid #1bacb3;
 }
 .roadmap-container .timeline-list .timeline-item-block .timeline-item-label {
@@ -150,7 +151,7 @@
 
 .roadmap-container .timeline-list .timeline-item-label-hr {
   float: left;
-  width: 475px;
+  width: 445px;
   height: 3px;
   background-color: #555;
   position: relative;
@@ -170,7 +171,7 @@
 }
 
 .roadmap-container .timeline-list .timeline-col-right .timeline-item-label-hr {
-  margin-left: -125px;
+  margin-left: -90px;
 }
 
 .roadmap-container .timeline-list .timeline-item-block .timeline-item-label2 {

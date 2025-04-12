@@ -1,25 +1,30 @@
-import './gameRoom.css';
+import "./gameRoom.css";
 
-const FlippingNumbers = () => {
-  
+interface FlippingNumbersProps {
+  players: number; 
+}
+
+const FlippingNumbers = ({ players }: FlippingNumbersProps) => {
+  // const { games } = useWebSocketStore();
+  // const game = games.find((g) => g.game_id === gameId);
+  // const session = game?.sessions[0]; 
+
+  // const players = session?.players ?? 0;
+
   return (
     <div className="flipping-numbers">
-        <div  className="digit">
-          <div className="container">
-  <div className="nums nums-ten">
-    <div className="num" data-num="0" data-num-next="1"></div>
-    <div className="num" data-num="1" data-num-next="2"></div>
-    <div className="num" data-num="2" data-num-next="3"></div>
-    <div className="num" data-num="3" data-num-next="4"></div>
-    <div className="num" data-num="4" data-num-next="5"></div>
-    <div className="num" data-num="5" data-num-next="6"></div>
-    <div className="num" data-num="6" data-num-next="7"></div>
-    <div className="num" data-num="7" data-num-next="8"></div>
-    <div className="num" data-num="8" data-num-next="9"></div>
-    <div className="num" data-num="9" data-num-next="0"></div>
-  </div>
-  </div>
-</div>
+      <div className="digit">
+        <div className="container">
+          <div className="nums nums-ten">
+            {String(players)
+              .padStart(2, "0") 
+              .split("")
+              .map((digit, index) => (
+                <div key={index} className="num" data-num={digit}></div>
+              ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

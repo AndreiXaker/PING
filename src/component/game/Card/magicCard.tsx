@@ -1,7 +1,11 @@
 import { useState } from "react";
 import "./Card.css";
+interface MagicCardProps {
+  number: number;
+  onClick: () => void;
+}
 
-export default function MagicCard({ number }: { number: number }) {
+const MagicCard: React.FC<MagicCardProps> = ({ number, onClick }) =>{
   const [hoverText, setHoverText] = useState("");
 
   return (
@@ -9,8 +13,11 @@ export default function MagicCard({ number }: { number: number }) {
       className="card"
       onMouseEnter={() => setHoverText(`${number}`)}
       onMouseLeave={() => setHoverText("")}
+      onClick={onClick}
     >
       {hoverText || "Magic Card"}
     </div>
   );
 }
+
+export default MagicCard
