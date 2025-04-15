@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDepositMutation } from "../hooks/useDeposit";
-
+import { message } from "antd";
 
 interface ModalComponentProps {
   isOpen: boolean;
@@ -23,10 +23,11 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
   
   const depositMutation = useDepositMutation(
     () => {
+      message.success("✅ Ваш баланс пополнен. Обновите страницу.");
       onConfirm(); 
     },
-    (error) => {
-      alert("Ошибка запроса: " + error.message);
+    () => {
+      alert("Ошибка пополнения баланса");
     }
   );
 

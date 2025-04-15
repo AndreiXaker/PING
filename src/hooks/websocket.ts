@@ -28,7 +28,6 @@ export const useWebSocketStore = create<WebSocketStore>((set, get) => {
   socket.onmessage = (event) => {
     try {
       const data = JSON.parse(event.data);
-      console.log("WebSocket-сообщение:", data);
       const games: Game[] = data.active_games;
 
       let playersCount = 0;

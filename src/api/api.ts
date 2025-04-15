@@ -64,30 +64,20 @@ export const checkBalance = async () => {
 };
 
 export const usersGame = async (game_id: string, data: IGameData) => {
-  try {
-   
-    const session_id = getSessionIdForGame(game_id);
+  const session_id = getSessionIdForGame(game_id);
 
-    if (!session_id) {
-      throw new Error(`Игра с game_id ${game_id} не найдена`);
-    }
+  // console.log("Отправляемые данные на сервер:", {
+  //   session_id: data.session_id,
+  //   bet_amount: data.bet_amount,
+  //   cell_num: data.cell_num
+  // });
 
-    console.log("Отправляемые данные на сервер:", {
-      session_id: data.session_id,
-      bet_amount: data.bet_amount,
-      cell_num: data.cell_num
-    });
+  const response = await apiClient.post(`/join-game-session/${game_id}/`, {
+    session_id,
+    cell_numbers: data.cell_num,
+    bet_amount: data.bet_amount
+  });
 
-    const response = await apiClient.post(`/join-game-session/${game_id}/`, {
-      session_id, 
-      cell_numbers: data.cell_num,
-      bet_amount: data.bet_amount
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error("Ошибка при подключении к игре:", error);
-    throw new Error("Ошибка при подключении к игре: " + error);
-  }
+  return response.data;
 };
 
