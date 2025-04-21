@@ -37,9 +37,9 @@ const App = () => {
                   <Header />
                   <main className="flex flex-col p-4 text-white min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-zinc-900">
                     <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-                      <GameRoom maxPlayers={3} gameName="ThreeGames" />
-                      <GameRoom maxPlayers={6} gameName="SixGames" />
-                      <GameRoom maxPlayers={9} gameName="NineGames" />
+                      <GameRoom maxPlayers={3} gameName="ThreeGames" selectedCells={[]} />
+                      <GameRoom maxPlayers={6} gameName="SixGames" selectedCells={[]} />
+                      <GameRoom maxPlayers={9} gameName="NineGames" selectedCells={[]} />
                     </div>
 
                     <div className="mt-6 rounded-lg bg-gray-800/50 p-4 backdrop-blur-sm">

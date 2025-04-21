@@ -7,7 +7,7 @@ interface RightSidebarProps {
 
 export default function RightSidebar({ openModal }: RightSidebarProps) {
   const { data, error, isLoading } = useBalance();
-  console.log('Balance data:', data);
+  
   const cards = [
     { title: "Ваш баланс", hasButton: true },
     { title: "Статистика", hasButton: false },

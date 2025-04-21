@@ -7,18 +7,30 @@ export interface IGameData {
   session_id: number;
 }
 
-// const games = [
-//   { game_id: '3506bc39-f636-403b-88fc-cc88a69185d2' },
-//   { game_id: 'e66b5667-4c57-4253-a185-be38aea52996' },
-//   { game_id: 'c7179aa6-d645-45a3-a5a9-f2a0c35f3f72' },
-// ];
-
 const apiClient = axios.create({
-    baseURL: "http://localhost:8000/games/api/v1", 
+    baseURL: "https://pingapp.tech/games/api/v1", 
     headers: {
       "Content-Type": "application/json",
     },
   });
+
+const userApi = axios.create({
+  baseURL: "https://pingapp.tech/users/api/v1",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+userApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem("access");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
 
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("access");
@@ -81,3 +93,46 @@ export const usersGame = async (game_id: string, data: IGameData) => {
   return response.data;
 };
 
+// Ограничение ставки по криптовалюте
+export const limitBet = async () => {
+  try {
+    const response = await axios.get("https://pingapp.tech/games/api/v1/coin-bet-limits/")
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при запросе:", error);
+    return null;
+  }
+}
+// Выигрыши пользователя
+export const usersLoses = async () => {
+  try {
+    const response = await apiClient.get("https://pingapp.tech/users/api/v1/memo-phrase/")
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при запросе:", error);
+    return null;
+
+  }
+}
+// Победы пользователя
+export const usersWins = async () => {
+  try {
+    const response = await apiClient.get("/my-wins/")
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при запросе:", error);
+    return null;
+  }
+}
+
+// Получение id пользователя
+export const userLogin = async () => {
+  try {
+    const response = await userApi.get("/memo-phrase/")
+    return response.data.memo_phrase;
+  } catch (error) {
+    console.error("Ошибка при запросе:", error);
+    return null;
+  }
+
+  }
