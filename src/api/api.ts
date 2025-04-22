@@ -8,18 +8,25 @@ export interface IGameData {
 }
 
 const apiClient = axios.create({
-    baseURL: "https://pingapp.tech/games/api/v1", 
+    baseURL: import.meta.env.VITE_API_BASE_URL, 
     headers: {
       "Content-Type": "application/json",
     },
   });
 
 const userApi = axios.create({
-  baseURL: "https://pingapp.tech/users/api/v1",
+  baseURL: import.meta.env.VITE_USER_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+const publicApi = axios.create({
+  baseURL: import.meta.env.VITE_PUBLIC_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+})
 
 userApi.interceptors.request.use((config) => {
   const token = localStorage.getItem("access");
@@ -96,17 +103,17 @@ export const usersGame = async (game_id: string, data: IGameData) => {
 // Ограничение ставки по криптовалюте
 export const limitBet = async () => {
   try {
-    const response = await axios.get("https://pingapp.tech/games/api/v1/coin-bet-limits/")
+    const response = await publicApi.get("/coin-bet-limits/")
     return response.data;
   } catch (error) {
     console.error("Ошибка при запросе:", error);
     return null;
   }
 }
-// Выигрыши пользователя
+// Проигрыши пользователя
 export const usersLoses = async () => {
   try {
-    const response = await apiClient.get("https://pingapp.tech/users/api/v1/memo-phrase/")
+    const response = await apiClient.get("/my-losses/")
     return response.data;
   } catch (error) {
     console.error("Ошибка при запросе:", error);
@@ -136,3 +143,4 @@ export const userLogin = async () => {
   }
 
   }
+

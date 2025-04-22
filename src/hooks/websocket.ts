@@ -23,7 +23,7 @@ interface WebSocketStore {
 }
 
 export const useWebSocketStore = create<WebSocketStore>((set, get) => {  
-  const socket = new WebSocket("wss://pingapp.tech/ws/active-games/");
+  const socket = new WebSocket(import.meta.env.VITE_WS_URL);
 
   socket.onmessage = (event) => {
     try {

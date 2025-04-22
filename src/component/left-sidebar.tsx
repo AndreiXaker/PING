@@ -4,7 +4,7 @@ import { Button } from './ui/Button'
 import ping from "../component/ui/ping.gif";
 import { useWebSocketStore } from '../hooks/websocket';
 import { userLogin } from '../api/api';
- // Импортируем функцию для получения мемофразы
+
 
 export default function LeftSidebar() {
   const { games } = useWebSocketStore();
@@ -49,7 +49,7 @@ export default function LeftSidebar() {
         ) : (
           <Button
             className="text-lg text-white font-bold text-center"
-            onClick={() => window.location.href = "https://pingapp.tech/users/telegram/redirect/"}
+            onClick={() => window.location.href = import.meta.env.VITE_REGISTER_URL}
           >
             LOGIN
           </Button>

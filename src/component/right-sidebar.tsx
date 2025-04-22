@@ -18,7 +18,7 @@ export default function RightSidebar({ openModal }: RightSidebarProps) {
   ];
 
   return (
-    <div className="w-64 border-r border-gray-800 bg-gray-900/50 p-4 backdrop-blur-sm">
+    <div className="w-auto border-r border-gray-800 bg-gray-900/50  backdrop-blur-sm">
       <nav className="space-y-4">
         {cards.map((card, index) => (
           <div key={index} className="rounded-lg bg-gray-800/50 p-4 mr-7">

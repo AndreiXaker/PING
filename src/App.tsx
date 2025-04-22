@@ -51,7 +51,7 @@ const App = () => {
 
                 <Sider
                   width={250}
-                  className="bg-[#131722] p-3 border border-1 border-gray-700 hidden lg:block"
+                  className="bg-[#131722] p-3  border border-1 border-gray-700 hidden lg:block"
                 >
                   <RightSidebar openModal={openModal} />
                 </Sider>
