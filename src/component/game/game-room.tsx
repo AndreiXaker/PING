@@ -48,7 +48,7 @@ export default function GameRoom({ maxPlayers, gameName }: GameRoomProps) {
   
           if (response?.message) {
             message.success(response.message);
-            setSelectedCells((prev) => [...prev, cellNum]); // сохраняем ячейку
+            setSelectedCells((prev) => [...prev, cellNum]); 
           } else {
             message.success("Ставка размещена");
             setSelectedCells((prev) => [...prev, cellNum]);

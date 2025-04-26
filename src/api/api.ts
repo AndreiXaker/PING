@@ -141,6 +141,22 @@ export const userLogin = async () => {
     console.error("Ошибка при запросе:", error);
     return null;
   }
-
   }
+
+// Снятие средств
+export const transfer = async ({amount, currency, wallet_address,} : 
+  {amount: string, currency: string, wallet_address: string}) => {
+    try {
+      const response = await apiClient.post("/ton-transfer/", {
+        type : "ton_transfer",
+        amount,
+        currency,
+        wallet_address,
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error("Ошибка при снятии баланса: " + error);
+    }
+  }
+
 

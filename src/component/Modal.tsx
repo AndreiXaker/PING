@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDepositMutation } from "../hooks/useDeposit";
 import { message } from "antd";
+import { transfer } from "../api/api";
 
 interface ModalComponentProps {
   isOpen: boolean;
@@ -11,6 +12,17 @@ interface ModalComponentProps {
 const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConfirm }) => {
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
   const [amount, setAmount] = useState<string>("");
+  const [walletAddress, setWalletAddress] = useState<string>(""); // <<< добавляем
+
+  const depositMutation = useDepositMutation(
+    () => {
+      message.success("✅ Ваш баланс пополнен. Обновите страницу.");
+      onConfirm();
+    },
+    () => {
+      alert("Ошибка пополнения баланса");
+    }
+  );
 
   const handleCurrencyChange = (currency: string) => {
     setSelectedCurrency(currency);
@@ -20,22 +32,34 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
     setAmount(e.target.value);
   };
 
-  
-  const depositMutation = useDepositMutation(
-    () => {
-      message.success("✅ Ваш баланс пополнен. Обновите страницу.");
-      onConfirm(); 
-    },
-    () => {
-      alert("Ошибка пополнения баланса");
-    }
-  );
+  const handleWalletAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWalletAddress(e.target.value);
+  };
 
-  const handleSubmit = () => {
-    if (selectedCurrency && amount) {
-      depositMutation.mutate({ coin: selectedCurrency, amount });
-    } else {
+  const handleSubmit = async () => {
+    if (!selectedCurrency || !amount) {
       alert("Пожалуйста, выберите валюту и введите сумму");
+      return;
+    }
+
+    if (walletAddress) {
+      // Если введен адрес — значит это вывод средств
+      try {
+        await transfer({
+          amount,
+          currency: selectedCurrency,
+          wallet_address: walletAddress,
+        });
+        message.success("✅ Перевод отправлен!");
+        onConfirm();
+        onClose();
+      } catch (error) {
+        console.error(error);
+        message.error("❌ Ошибка при отправке перевода");
+      }
+    } else {
+      // Если адрес не введён — это пополнение
+      depositMutation.mutate({ coin: selectedCurrency, amount });
     }
   };
 
@@ -44,7 +68,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-gray-800 p-6 rounded-lg max-w-min">
-        <h2 className="text-white text-xl font-bold text-center">Пополнение баланса</h2>
+        <h2 className="text-white text-xl font-bold text-center">{walletAddress ? 'Вывод средств:' : 'Пополнение баланса:'}</h2>
 
         <div className="m-4 p-2 text-2xl font-bold">
           <label className="text-white">Выберите валюту:</label>
@@ -116,7 +140,18 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
             value={amount}
             onChange={handleAmountChange}
             className="w-full p-2 bg-gray-700 text-white rounded mt-2"
-            placeholder="Введите сумму"
+            placeholder="Введите сумму для пополнения или вывода" 
+          />
+        </div>
+
+        <div className="mt-4">
+        <label className="text-white">Адрес кошелька (если вывод средств):</label>
+          <input
+            type="text"
+            value={walletAddress}
+            onChange={handleWalletAddressChange}
+            className="w-full p-2 bg-gray-700 text-white rounded mt-2"
+            placeholder="Введите адрес кошелька"
           />
         </div>
 
@@ -147,7 +182,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
             className="bg-blue-500 text-white p-2 rounded"
             disabled={depositMutation.isLoading}
           >
-            {depositMutation.isLoading ? "Загрузка..." : "Пополнить"}
+            {depositMutation.isLoading ? "Загрузка..." : walletAddress ? "Вывести" : "Пополнить"}
           </button>
         </div>
       </div>
