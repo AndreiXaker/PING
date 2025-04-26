@@ -20,13 +20,17 @@ RUN npm run build
 FROM nginx:alpine
 
 # Копируем билд React-приложения в директорию Nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html
 
-# Копируем конфигурацию Nginx (опционально)
+# Копируем конфигурацию Nginx для работы с HTTPS
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
-# Открываем порт 80
-EXPOSE 80
+# Копируем SSL-сертификаты в контейнер
+COPY ./certs/cert.pem /etc/nginx/certs/cert.pem
+COPY ./certs/privkey.pem /etc/nginx/certs/privkey.pem
+
+# Открываем порт 8443
+EXPOSE 8443
 
 # Запускаем Nginx
 CMD ["nginx", "-g", "daemon off;"]
