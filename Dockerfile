@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN npm install
+RUN pnpm install
 
 # Копируем весь код
 COPY . .
 
 # Собираем приложение
-RUN npm run build
+RUN pnpm run build
 
 # Шаг 2: Настройка Nginx для раздачи собранного приложения
 FROM nginx:alpine
