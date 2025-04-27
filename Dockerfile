@@ -8,22 +8,18 @@ WORKDIR /app
 COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN pnpm install
+RUN npm install
 
 # Копируем весь код
 COPY . .
 
 # Собираем приложение
-RUN pnpm run build
+RUN npm run build
 
 # Шаг 2: Настройка Nginx для раздачи собранного приложения
 FROM nginx:alpine
 
-
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-
-
 
 # Копируем конфигурацию Nginx для работы с HTTPS
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
