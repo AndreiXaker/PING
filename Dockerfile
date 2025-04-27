@@ -19,8 +19,11 @@ RUN pnpm run build
 # Шаг 2: Настройка Nginx для раздачи собранного приложения
 FROM nginx:alpine
 
-# Копируем билд React-приложения в директорию Nginx
-COPY --from=builder /app/build /usr/share/nginx/html
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+
+
 
 # Копируем конфигурацию Nginx для работы с HTTPS
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
