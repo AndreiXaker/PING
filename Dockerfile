@@ -20,8 +20,8 @@ RUN npm run build
 FROM nginx:alpine
 
 
-# Копируем билд React-приложения в директорию Nginx
-COPY --from=builder /app/build /usr/share/nginx/dist
+COPY --from=builder /app/dist /usr/share/nginx/html
+
 
 
 
