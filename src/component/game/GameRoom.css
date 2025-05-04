@@ -1,0 +1,42 @@
+
+.game-room-card {
+    background-color: #1f2937 !important;
+    color: white;
+  }
+  
+  /* Обёртка мета‑данных (заголовок + ввод) */
+  .game-room-meta-desc {
+    display: flex;
+    align-items: center;
+  }
+  
+  .game-room-meta-desc .ant-typography-secondary {
+    color: gray;
+    margin-right: 8px;
+  }
+  
+  /* Сетка карточек */
+  .game-room-grid {
+    display: grid;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+    grid-template-columns: repeat(3,150px);
+  }
+  
+
+  .game-room-timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+  }
+  
+  /* Текст “Игроков в комнате” */
+  .game-room-player-count {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    color: gray;
+  }
+  

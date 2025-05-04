@@ -1,27 +1,19 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Layout } from "antd";
 import LeftSidebar from "./component/left-sidebar";
 import RightSidebar from "./component/right-sidebar";
-import Header from "./component/header";
+import Header from "./component/Header/header";
 import GameRoom from "./component/game/game-room";
 import { useState } from "react";
 import ModalComponent from "./component/Modal";
 import { QueryClientProvider, QueryClient } from "react-query";
 import Auth from "./auth/Auth";
-
-const { Sider } = Layout;
+import NewsletterForm from "./component/LetterForm";
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const queryClient = new QueryClient();
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <Router>
@@ -30,16 +22,25 @@ const App = () => {
           path="/"
           element={
             <QueryClientProvider client={queryClient}>
-              <Layout className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-zinc-900">
+              
+              <div className="min-h-screen flex bg-gradient-to-br from-gray-900 via-slate-900 to-zinc-900">
+                
                 <LeftSidebar />
-
-                <Layout className="flex-1">
+                
+                <div className="flex-1 flex flex-col">
                   <Header />
-                  <main className="flex flex-col p-4 text-white min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-zinc-900">
+                  <main className="flex-1 p-4 text-white overflow-auto">
                     <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-                      <GameRoom maxPlayers={3} gameName="ThreeGames" selectedCells={[]} />
-                      <GameRoom maxPlayers={6} gameName="SixGames" selectedCells={[]} />
-                      <GameRoom maxPlayers={9} gameName="NineGames" selectedCells={[]} />
+                    <div className="space-y-6">
+                        <GameRoom maxPlayers={3} gameName="ThreeGames" />
+                         
+                        <div className="flex justify-center bg-gray-800 rounded-xl p-6 shadow-xl">
+                          <NewsletterForm />
+                        </div>
+                      </div>
+
+                      <GameRoom maxPlayers={6} gameName="SixGames" />
+                      <GameRoom maxPlayers={9} gameName="NineGames"  />
                     </div>
 
                     <div className="mt-6 rounded-lg bg-gray-800/50 p-4 backdrop-blur-sm">
@@ -47,24 +48,20 @@ const App = () => {
                       <div className="mt-4 h-32 rounded-md bg-gray-700/50"></div>
                     </div>
                   </main>
-                </Layout>
-
-                <Sider
-                  width={250}
-                  className="bg-[#131722] p-3  border border-1 border-gray-700 hidden lg:block"
-                >
-                  <RightSidebar openModal={openModal} />
-                </Sider>
+                </div>
+             
+                <RightSidebar />
 
                 <ModalComponent
                   isOpen={isModalOpen}
                   onClose={closeModal}
                   onConfirm={() => console.log("Баланс пополнен")}
                 />
-              </Layout>
+              </div>
             </QueryClientProvider>
           }
         />
+
         <Route path="*" element={<h1 className="text-red-600">404</h1>} />
         <Route path="/auth" element={<Auth />} />
       </Routes>

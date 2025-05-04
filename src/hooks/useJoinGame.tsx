@@ -9,7 +9,7 @@ interface UseGameMutationProps {
   
 export const useJoinGame = () => {
   return useMutation(
-    ({ game_id, data }: UseGameMutationProps) => usersGame(game_id, data), // Передаем game_id и данные
+    ({ game_id, data }: UseGameMutationProps) => usersGame(game_id, data),
     {
       onSuccess: (data) => {
         console.log("Успешно подключено к игре:", data);

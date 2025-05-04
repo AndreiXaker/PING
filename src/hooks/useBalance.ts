@@ -14,9 +14,7 @@ interface BalanceData {
 export const useBalance = () => {
 
   return useQuery<BalanceData,Error>("balances", checkBalance, {
-    staleTime: 0,             
-    cacheTime: 0,
-    refetchOnWindowFocus: false,  
-    retry: 2,           
+    refetchInterval : 2000,
+    refetchOnWindowFocus : true  
   });
 };

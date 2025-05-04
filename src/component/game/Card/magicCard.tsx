@@ -1,23 +1,26 @@
 import { useState } from "react";
 import "./Card.css";
+
 interface MagicCardProps {
-  number: number;
+  value: number;
   onClick: () => void;
 }
 
-const MagicCard: React.FC<MagicCardProps> = ({ number, onClick }) =>{
-  const [hoverText, setHoverText] = useState("");
+const MagicCard: React.FC<MagicCardProps> = ({ value, onClick }) => {
+  const [hovered, setHovered] = useState(false);
 
   return (
     <div
       className="card"
-      onMouseEnter={() => setHoverText(`${number}`)}
-      onMouseLeave={() => setHoverText("")}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       onClick={onClick}
     >
-      {hoverText || "Magic Card"}
+      <div className={`card-content ${hovered ? "show" : ""}`}>
+        {hovered ? value : ""}
+      </div>
     </div>
   );
-}
+};
 
-export default MagicCard
+export default MagicCard;

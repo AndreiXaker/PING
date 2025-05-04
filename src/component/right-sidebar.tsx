@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { Button } from "./ui/Button";
-import { useBalance } from "../hooks/useBalance";
 import { usersLoses, usersWins } from "../api/api";
 
 interface Win {
@@ -20,12 +18,9 @@ interface Loss {
   created_at: string;
 }
 
-interface RightSidebarProps {
-  openModal: () => void;
-}
 
-export default function RightSidebar({ openModal }: RightSidebarProps) {
-  const { data, error, isLoading } = useBalance();
+
+export default function RightSidebar() {
 
   const [wins, setWins] = useState<Win[]>([]);
   const [losses, setLosses] = useState<Loss[]>([]);
@@ -51,7 +46,6 @@ export default function RightSidebar({ openModal }: RightSidebarProps) {
   }, []);
 
   const cards = [
-    { title: "Ваш баланс", hasButton: true },
     { title: "Статистика", hasButton: false },
     { title: "Партнерская программа", hasButton: false },
     { title: "Битва кланов", hasButton: false },
@@ -60,42 +54,21 @@ export default function RightSidebar({ openModal }: RightSidebarProps) {
   ];
 
   return (
-    <div className=" border-r border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+    <div className="w-70 border-l border-gray-800 bg-gray-900/50 p-4 backdrop-blur-sm">
       <nav className="space-y-4">
         {cards.map((card, index) => (
-          <div key={index} className="rounded-lg bg-gray-800/50 p-4 mr-7">
+          <div key={index} className="rounded-lg bg-gray-800/50 p-4 flex flex-col items-center">
             <div className="space-y-2 flex flex-col items-center">
               <p className="text-lg text-white font-bold text-center">{card.title}</p>
 
-              {card.title === "Ваш баланс" && (
-                <div>
-                  {isLoading ? (
-                    <p className="text-white">Загрузка...</p>
-                  ) : error ? (
-                    <p className="text-red-500">Ошибка загрузки баланса</p>
-                  ) : (
-                    <div>
-                      {data?.balances.map((balance, index) => (
-                        <p key={index} className="text-white">
-                          {balance.coin}: {balance.amount}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-                  <Button className="text-lg" onClick={openModal}>
-                    Пополнить/Снять баланс
-                  </Button>
-                </div>
-              )}
-
               {card.title === "Статистика" && (
-                <div className="text-white">
+                <div className="text-white max-h-60 overflow-y-auto ">
                   {statsLoading ? (
                     <p>Загрузка статистики...</p>
                   ) : statsError ? (
                     <p className="text-red-500">Ошибка загрузки статистики</p>
                   ) : (
-                    <div className="space-y-4 text-left">
+                    <div className="space-y-4 text-left pr-4">
                       <div>
                         <p className="text-green-400 font-semibold">Победы:</p>
                         {wins.length > 0 ? (

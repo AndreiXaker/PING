@@ -2,9 +2,10 @@ import axios from "axios";
 import { useWebSocketStore } from "../hooks/websocket";
 
 export interface IGameData {
-  cell_num: number[];
+  cell_numbers: number[];
   bet_amount: number;
   session_id: number;
+  coin_symbol: string;
 }
 
 const apiClient = axios.create({
@@ -21,12 +22,7 @@ const userApi = axios.create({
   },
 });
 
-const publicApi = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-})
+
 
 userApi.interceptors.request.use((config) => {
   const token = localStorage.getItem("access");
@@ -71,7 +67,7 @@ export const deposit = async ({coin,amount} : { coin: string; amount: string }) 
     }
 };
 
-
+// Получение баланса пользователя
 export const checkBalance = async () => {
   try {
     const response = await apiClient.get("/check_balance/")
@@ -82,8 +78,9 @@ export const checkBalance = async () => {
   }
 };
 
+//Ставки на игру пользователя
 export const usersGame = async (game_id: string, data: IGameData) => {
-  const session_id = getSessionIdForGame(game_id);
+  const session_id = data.session_id ?? getSessionIdForGame(game_id);
 
   // console.log("Отправляемые данные на сервер:", {
   //   session_id: data.session_id,
@@ -93,8 +90,9 @@ export const usersGame = async (game_id: string, data: IGameData) => {
 
   const response = await apiClient.post(`/join-game-session/${game_id}/`, {
     session_id,
-    cell_numbers: data.cell_num,
-    bet_amount: data.bet_amount
+    cell_numbers: data.cell_numbers,
+    bet_amount: data.bet_amount,
+    coin_symbol: data.coin_symbol,
   });
 
   return response.data;
@@ -103,7 +101,7 @@ export const usersGame = async (game_id: string, data: IGameData) => {
 // Ограничение ставки по криптовалюте
 export const limitBet = async () => {
   try {
-    const response = await publicApi.get("/coin-bet-limits/")
+    const response = await axios.get("https://pingapp.tech/games/api/v1/coin-bet-limits/")
     return response.data;
   } catch (error) {
     console.error("Ошибка при запросе:", error);
