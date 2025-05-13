@@ -26,7 +26,7 @@ const RadioSelector = ({selectedIndex, setSelectedIndex}: RadioSelectProps) => {
   }, []);
   
   return (
-    <StyledWrapper count={coins.length} index={selectedIndex}>
+    <StyledWrapper count={coins.length} index={selectedIndex} >
       <div className="radio-input">
         {coins.map((coin, idx) => (
           <label key={coin}>
@@ -60,7 +60,7 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
     border-radius: 10px;
     background-color: #212121;
     color: #fff;
-    width: var(--container_width);
+    width: var(--container_width: ${({ count }) => count * 80}px);
     height: 50px;
     overflow: hidden;
     border: 2px solid #fff;
@@ -83,11 +83,12 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
     display: none;
     position: absolute;
     height: 100%;
-    width: calc(var(--container_width) / 3);
+    width: ${({ count }) => 100 / count}%;
     z-index: 0;
-    left: 0;
+    left: ${({ index, count }) => `calc((100% / ${count}) * ${index})`};
     top: 0;
     transition: 0.15s ease;
+    transform: translateX(var(--selector-position));
   }
 
   .radio-input label:has(input:checked) {
@@ -99,17 +100,6 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
     display: inline-block;
   }
 
-  .radio-input label:nth-child(1):has(input:checked) ~ .selection {
-    transform: translateX(0%);
-  }
-
-  .radio-input label:nth-child(2):has(input:checked) ~ .selection {
-    transform: translateX(100%);
-  }
-
-  .radio-input label:nth-child(3):has(input:checked) ~ .selection {
-    transform: translateX(200%);
-  }
 `;
 
 export default RadioSelector;

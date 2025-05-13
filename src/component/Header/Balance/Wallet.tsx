@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useBalance } from "../../../hooks/useBalance";
 import { Alert, Spin } from "antd";
 import { useGameStore } from "../../../store/store";
+import { useEffect } from "react";
 
 interface WalletBalanceProps {
   openModal: () => void
@@ -10,8 +11,16 @@ interface WalletBalanceProps {
 const WalletBalance = ({ 
   openModal
 }: WalletBalanceProps) => {
-    const {coinSymbol} = useGameStore()
+    const {coinSymbol, setCoinSymbol} = useGameStore()
     const {data,isLoading,isError , error} = useBalance()
+
+    useEffect(() => {
+      if(!coinSymbol && data?.balances && data.balances.length > 0) {
+      setCoinSymbol(data.balances[0].coin)
+      }
+    }, [data,coinSymbol,setCoinSymbol])
+
+    
 
     const currentBalance = data?.balances.find(b => b.coin === coinSymbol)
 
@@ -58,7 +67,7 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: flex-start;
     gap: 12px;
-    padding: 0 12px;
+    padding: 0 12px ;
     transition: transform 0.2s ease;
     
     &:hover {
@@ -68,24 +77,29 @@ const StyledWrapper = styled.div`
 
   .svgwrapper {
     width: 28px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     
     svg {
       width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
     }
   }
 
   .balancewrapper {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: 120px;
-    gap: 2px;
+    
   }
 
   .balanceHeading {
-    font-size: 8px;
+    font-size: 12px;
     color: #d6d6d6;
     letter-spacing: 0.6px;
   }
@@ -96,6 +110,7 @@ const StyledWrapper = styled.div`
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: color 0.3s ease;
+    margin-top : -50px
   }
 
   .currency {

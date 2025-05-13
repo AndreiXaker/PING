@@ -17,24 +17,20 @@ interface BetProps {
 const BetLimitSelector = ({ selectedIndex, setSelectedIndex, coinIndex }: BetProps) => {
   const [bets, setBets] = useState<string[]>([]);
   const { setBetAmount } = useGameStore();
-
-  const handleSelection = (index: number, amount : number) => {
+  const handleSelection = (index: number, amount: number) => {
     setSelectedIndex(index, amount);
     setBetAmount(amount)
-  }
+  };
 
   useEffect(() => {
     const fetchBets = async () => {
       try {
         const data = await limitBet();
-        
         if (Array.isArray(data)) {
-          
           if (coinIndex !== undefined) {
             const selectedCoinBets = data[coinIndex]?.allowed_bets || [];
             setBets(selectedCoinBets);
           } else {
-            
             const allBets = data.flatMap((item) => item.allowed_bets);
             const uniqueBets = Array.from(new Set(allBets));
             setBets(uniqueBets);
@@ -47,17 +43,17 @@ const BetLimitSelector = ({ selectedIndex, setSelectedIndex, coinIndex }: BetPro
     };
 
     fetchBets();
-  }, [coinIndex]); 
+  }, [coinIndex]);
 
   if (bets.length === 0) {
-    return null; 
+    return null;
   }
 
   return (
     <StyledWrapper count={bets.length} index={selectedIndex}>
       <div className="radio-input">
         {bets.map((bet, idx) => {
-          const amount = parseFloat(bet)
+          const amount = parseFloat(bet);
           return (
             <label key={idx}>
               <input
@@ -67,13 +63,13 @@ const BetLimitSelector = ({ selectedIndex, setSelectedIndex, coinIndex }: BetPro
               />
               <span>{amount}</span>
             </label>
-          )
+          );
         })}
         <span className="selection" />
       </div>
     </StyledWrapper>
-  )
-}
+  );
+};
 
 const StyledWrapper = styled.div<BetLimitSelectorProps>`
   .radio-input input {

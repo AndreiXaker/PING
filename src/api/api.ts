@@ -22,8 +22,6 @@ const userApi = axios.create({
   },
 });
 
-
-
 userApi.interceptors.request.use((config) => {
   const token = localStorage.getItem("access");
   if (token) {
@@ -49,17 +47,16 @@ const getSessionIdForGame = (game_id: string) => {
   const game = useWebSocketStore.getState().games.find((game) => game.game_id === game_id);
   if (game) {
     
-    const activeSession = game.sessions.find((session) => session.players === 0); // или другой критерий
+    const activeSession = game.sessions.find((session) => session.players === 0); 
     return activeSession ? activeSession.session_id : null;
   }
   return null;
 };
 
-export const deposit = async ({coin,amount} : { coin: string; amount: string }) => {
+export const deposit = async ({coin} : { coin: string}) => {
     try {
-      const response = await apiClient.post("/deposit/", {
-        coin,
-        amount,
+      const response = await apiClient.post("api/v1/deposit/", {
+        coin
       });
       return response.data;
     } catch (error) {
@@ -70,7 +67,7 @@ export const deposit = async ({coin,amount} : { coin: string; amount: string }) 
 // Получение баланса пользователя
 export const checkBalance = async () => {
   try {
-    const response = await apiClient.get("/check_balance/")
+    const response = await apiClient.get("/api/v1/check_balance/")
     return response.data;
   } catch (error) {
     console.error("Ошибка при запросе:", error);
@@ -88,7 +85,7 @@ export const usersGame = async (game_id: string, data: IGameData) => {
   //   cell_num: data.cell_num
   // });
 
-  const response = await apiClient.post(`/join-game-session/${game_id}/`, {
+  const response = await apiClient.post(`api/v1/join-game-session/${game_id}/`, {
     session_id,
     cell_numbers: data.cell_numbers,
     bet_amount: data.bet_amount,
@@ -101,7 +98,7 @@ export const usersGame = async (game_id: string, data: IGameData) => {
 // Ограничение ставки по криптовалюте
 export const limitBet = async () => {
   try {
-    const response = await axios.get("https://pingapp.tech/games/api/v1/coin-bet-limits/")
+    const response = await axios.get("https://pingapp.tech/api/v1/games/api/v1/coin-bet-limits/")
     return response.data;
   } catch (error) {
     console.error("Ошибка при запросе:", error);
@@ -111,7 +108,7 @@ export const limitBet = async () => {
 // Проигрыши пользователя
 export const usersLoses = async () => {
   try {
-    const response = await apiClient.get("/my-losses/")
+    const response = await apiClient.get("api/v1/my-losses/")
     return response.data;
   } catch (error) {
     console.error("Ошибка при запросе:", error);
@@ -122,7 +119,7 @@ export const usersLoses = async () => {
 // Победы пользователя
 export const usersWins = async () => {
   try {
-    const response = await apiClient.get("/my-wins/")
+    const response = await apiClient.get("api/v1/my-wins/")
     return response.data;
   } catch (error) {
     console.error("Ошибка при запросе:", error);
@@ -133,7 +130,7 @@ export const usersWins = async () => {
 // Получение id пользователя
 export const userLogin = async () => {
   try {
-    const response = await userApi.get("/memo-phrase/")
+    const response = await userApi.get("api/v1/memo-phrase/")
     return response.data.memo_phrase;
   } catch (error) {
     console.error("Ошибка при запросе:", error);
@@ -145,7 +142,7 @@ export const userLogin = async () => {
 export const transfer = async ({amount, currency, wallet_address,} : 
   {amount: string, currency: string, wallet_address: string}) => {
     try {
-      const response = await apiClient.post("/ton-transfer/", {
+      const response = await apiClient.post("api/v1/ton-transfer/", {
         type : "ton_transfer",
         amount,
         currency,
@@ -157,4 +154,22 @@ export const transfer = async ({amount, currency, wallet_address,} :
     }
   }
 
+//QR код для пополнения средств
+export const qrCode = async (): Promise<string | null> => {
+  try {
+    const response = await axios.get(import.meta.env.VITE_API_BASE_URL + '/qr/DOGS/', {
+      responseType: 'blob', 
+    });
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onloadend = () => {
+        resolve(reader.result as string);
+      };
+      reader.onerror = reject; 
+      reader.readAsDataURL(response.data);  
+    });
+  } catch (error) {
+    throw new Error("Ошибка при получении qr кода: " + error);
+  }
+};
 

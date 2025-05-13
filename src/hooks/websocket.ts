@@ -11,7 +11,7 @@ interface Game {
   game_id: string;
   game_name: string;
   cell_count: number;
-  coin_symbol : string;
+  coin_symbols : string;
   sessions: GameSession[];
 }
 

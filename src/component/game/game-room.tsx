@@ -1,4 +1,4 @@
-import { Card, Space, Typography, message, Modal } from 'antd';
+import { Card, Space, message, Modal } from 'antd';
 import { useWebSocketStore } from '../../hooks/websocket';
 import CardsList from './Card/CardList';
 import GameTimer from './game-timer/gameTimer';
@@ -19,6 +19,7 @@ interface BetLimit {
 export default function GameRoom({ maxPlayers, gameName }: GameRoomProps) {
   const { coinSymbol, betAmount, setBetAmount, betLimits, setBetLimits } = useGameStore();
   const [selectedCells, setSelectedCells] = useState<number[]>([]);
+  const [selectedBetAmount] = useState<number | null>(null); 
 
   const { games } = useWebSocketStore();
   const game = games.find((g) => g.game_name === gameName)!;
@@ -49,12 +50,15 @@ export default function GameRoom({ maxPlayers, gameName }: GameRoomProps) {
     return () => clearInterval(intervalId);
   }, [setBetLimits]);
 
-  
-  const coinLimit = betLimits[coinSymbol]?.[0];
+  useEffect(() => {
+  const coinLimit = selectedBetAmount ?? betLimits[coinSymbol]?.[0];
 
   if (betAmount === 0 && coinLimit) {
-    setBetAmount(parseFloat(coinLimit)); 
+    setBetAmount(parseFloat(coinLimit.toString())); 
   }
+  })
+  
+  
 
   const handleCardClick = (cellNum: number) => {
     if (selectedCells.includes(cellNum)) {
@@ -62,10 +66,6 @@ export default function GameRoom({ maxPlayers, gameName }: GameRoomProps) {
       return;
     }
 
-    if (coinLimit && betAmount !== parseFloat(coinLimit)) {
-      message.warning(`Ставка должна быть равна лимиту: ${coinLimit} ${coinSymbol}`);
-      return;
-    }
 
     Modal.confirm({
       title: 'Подтверждение ставки',
@@ -94,7 +94,7 @@ export default function GameRoom({ maxPlayers, gameName }: GameRoomProps) {
     <Card bordered={false} className="game-room-card">
       <div className="flex justify-between mb-4">
         <Card.Meta
-          title={<Typography.Title level={4}>{gameName}</Typography.Title>}
+          // title={<Typography.Title level={4}>{gameName}</Typography.Title>}
         />
         <PlayerCountCard players={players} />
       </div>

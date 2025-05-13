@@ -8,6 +8,7 @@ import ModalComponent from "./component/Modal";
 import { QueryClientProvider, QueryClient } from "react-query";
 import Auth from "./auth/Auth";
 import NewsletterForm from "./component/LetterForm";
+import ActiveGames from "./component/ActiveGames";
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,10 +44,11 @@ const App = () => {
                       <GameRoom maxPlayers={9} gameName="NineGames"  />
                     </div>
 
-                    <div className="mt-6 rounded-lg bg-gray-800/50 p-4 backdrop-blur-sm">
+                    {/* <div className="mt-6 rounded-lg bg-gray-800/50 p-4 backdrop-blur-sm">
                       <h2 className="text-lg font-semibold text-white">Активные игры</h2>
                       <div className="mt-4 h-32 rounded-md bg-gray-700/50"></div>
-                    </div>
+                    </div> */}
+                    <ActiveGames/>
                   </main>
                 </div>
              
