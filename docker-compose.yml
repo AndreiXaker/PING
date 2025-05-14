@@ -4,7 +4,7 @@ services:
   react-app:
     build: .
     ports:
-      - "8443:8443"    # Проброс порта 8443
+      - "443:443"    # Проброс порта 8443
     volumes:
       - ./certs/cert.pem:/etc/nginx/certs/cert.pem  # SSL сертификат
       - ./certs/privkey.pem:/etc/nginx/certs/privkey.pem  # Приватный ключ
