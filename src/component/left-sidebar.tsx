@@ -3,24 +3,29 @@ import { Clock, PlayCircle } from 'lucide-react'
 import { Button } from './ui/Button'
 import ping from "../component/ui/ping.gif";
 import { useWebSocketStore } from '../hooks/websocket';
-import { userLogin } from '../api/api';
+import { userLogin,getLastDeposits,getLastWithdrawals, SimpleTransaction } from '../api/api';
 
 
 export default function LeftSidebar() {
   const { games } = useWebSocketStore();
   const [memoPhrase, setMemoPhrase] = useState<string | null>(null);
+  const [lastDeposits, setLastDeposits] = useState<SimpleTransaction[]>([]);
+  const [lastWithdrawals, setLastWithdrawals] = useState<SimpleTransaction[]>([]);
 
   useEffect(() => {
-    
-    const fetchMemoPhrase = async () => {
-      const phrase = await userLogin();
-      if (phrase) {
-        setMemoPhrase(phrase);
-      }
-    };
-
-    fetchMemoPhrase();
-  }, [])
+  const fetchMemoPhrase = async () => {
+    const phrase = await userLogin();
+    if (phrase) setMemoPhrase(phrase);
+  };
+  const fetchTransactions = async () => {
+    const deposits = await getLastDeposits();
+    const withdrawals = await getLastWithdrawals();
+    if (deposits) setLastDeposits(deposits);
+    if (withdrawals) setLastWithdrawals(withdrawals);
+  };
+  fetchMemoPhrase();
+  fetchTransactions();
+}, []);
 
   const finishingGames = games.flatMap(game =>
     game.sessions.filter(session => session.remaining_time <= 10).map(session => ({
@@ -55,18 +60,40 @@ export default function LeftSidebar() {
           </Button>
         )}
         </div>
-
         <div className="rounded-lg bg-gray-800/50 p-4">
-          <h1 className="mb-2 font-semibold text-gray-400">Последние действия</h1>
-          <div className="space-y-2">
-            <Button className='flex text-lg items-center'>
-              <Clock className="mr-2 h-4 w-4" size={20} />
-              Последние пополнения
-            </Button>
-            <Button className='flex text-lg items-center'>
-              <PlayCircle className="mr-2 h-4 w-4" size={20} />
-              Последние снятия
-            </Button>
+          <h1 className="mb-2 font-semibold text-gray-400 flex items-center">
+            <Clock className="mr-2 h-4 w-4" />
+            Последние пополнения
+          </h1>
+          <div className="space-y-1 text-sm text-white">
+            {lastDeposits.length > 0 ? (
+              lastDeposits.map((item, index) => (
+                <p key={index}>
+                  {item.amount} {item.coin} — {new Date(item.created_at).toLocaleTimeString()}
+                </p>
+              ))
+            ) : (
+              <p className="text-gray-400">Нет пополнений.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Последние снятия */}
+        <div className="rounded-lg bg-gray-800/50 p-4">
+          <h1 className="mb-2 font-semibold text-gray-400 flex items-center">
+            <PlayCircle className="mr-2 h-4 w-4" />
+            Последние снятия
+          </h1>
+          <div className="space-y-1 text-sm text-white">
+            {lastWithdrawals.length > 0 ? (
+              lastWithdrawals.map((item, index) => (
+                <p key={index}>
+                  {item.amount} {item.coin} — {new Date(item.created_at).toLocaleTimeString()}
+                </p>
+              ))
+            ) : (
+              <p className="text-gray-400">Нет снятий.</p>
+            )}
           </div>
         </div>
 

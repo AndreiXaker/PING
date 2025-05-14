@@ -1,6 +1,12 @@
 import axios from "axios";
 import { useWebSocketStore } from "../hooks/websocket";
 
+export interface SimpleTransaction {
+  amount: string;
+  coin: string;
+  created_at: string;
+}
+
 export interface IGameData {
   cell_numbers: number[];
   bet_amount: number;
@@ -173,3 +179,34 @@ export const qrCode = async (): Promise<string | null> => {
   }
 };
 
+//Последние пополнения
+export const getLastDeposits = async (): Promise<SimpleTransaction[] | null> => {
+  try {
+    const response = await apiClient.get("api/v1/last-deposits/");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return response.data.map((item: any) => ({
+      amount: item.amount,
+      coin: item.coin,
+      created_at: item.created_at,
+    }));
+  } catch (error) {
+    console.error("Ошибка при запросе:", error);
+    return null;
+  }
+};
+
+//Последние выводы
+export const getLastWithdrawals = async (): Promise<SimpleTransaction[] | null> => {
+  try {
+    const response = await apiClient.get("api/v1/last-withdrawals/");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return response.data.map((item: any) => ({
+      amount: item.amount,
+      coin: item.coin,
+      created_at: item.created_at,
+    }));
+  } catch (error) {
+    console.error("Ошибка при запросе:", error);
+    return null;
+  }
+};
