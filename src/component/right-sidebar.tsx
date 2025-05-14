@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { usersLoses, usersWins } from "../api/api";
+import { FileQuestionIcon } from "lucide-react";
 
 interface Win {
   game_name: string;
@@ -63,6 +64,15 @@ export default function RightSidebar() {
 
               {card.title === "Статистика" && (
                 <div className="text-white max-h-60 overflow-y-auto ">
+                    <a
+                    href="https://telegra.ph/Optimalnye-strategii-v-loteree-s-korobkami-kak-maksimizirovat-vyigrysh-05-06"
+                    className="question-icon absolute right-14 top-8"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <FileQuestionIcon />
+                  </a>
                   {statsLoading ? (
                     <p>Загрузка статистики...</p>
                   ) : statsError ? (

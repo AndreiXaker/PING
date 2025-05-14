@@ -7,6 +7,8 @@ import { useGameStore } from '../../store/store';
 import { usersGame, limitBet } from '../../api/api';
 import { useState, useEffect } from 'react';
 import './GameRoom.css';
+import { FileQuestionIcon } from 'lucide-react';
+
 
 interface GameRoomProps {
   maxPlayers: number;
@@ -26,6 +28,14 @@ export default function GameRoom({ maxPlayers, gameName }: GameRoomProps) {
   const session = game?.sessions.find((s) => s.players > 0) ?? game?.sessions[0];
   const players = session?.players ?? 0;
   const timeLeft = session?.remaining_time ?? 0;
+
+
+  const helpLinks = [
+    'https://telegra.ph/Opisanie-servisa-PING-05-06',
+    'https://telegra.ph/Igra-na-9-yacheek-v-servise-PING-05-06',
+    'https://telegra.ph/Opisanie-servisa-PING-igra-na-6-yacheek-05-06',
+  ];
+ 
 
   useEffect(() => {
     const fetchBetLimits = async () => {
@@ -97,9 +107,18 @@ export default function GameRoom({ maxPlayers, gameName }: GameRoomProps) {
           // title={<Typography.Title level={4}>{gameName}</Typography.Title>}
         />
         <PlayerCountCard players={players} />
+         <a
+          href={helpLinks[gameName === 'ThreeGames' ? 0 : gameName === 'SixGames' ? 2 : 1]}
+          className="question-icon"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <FileQuestionIcon />
+        </a>
       </div>
       <Space direction="vertical" className="flex justify-center">
-        <CardsList maxPlayers={maxPlayers} onCardClick={handleCardClick} />
+        <CardsList maxPlayers={maxPlayers} onCardClick={handleCardClick}  />
       </Space>
       <div className="flex justify-center mt-4">
         <GameTimer timeLeft={timeLeft} />

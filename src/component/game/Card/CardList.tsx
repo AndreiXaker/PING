@@ -2,6 +2,7 @@
 import MagicCard from "./magicCard";
 import "./Card.css";
 
+
 interface CardsListProps {
     maxPlayers: number;
     onCardClick?: (i: number) => void;
