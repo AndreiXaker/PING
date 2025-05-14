@@ -21,8 +21,6 @@ FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Копируем конфигурацию Nginx для работы с HTTPS
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Копируем SSL-сертификаты в контейнер
 COPY ./certs/cert.pem /etc/nginx/certs/cert.pem
