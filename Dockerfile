@@ -27,7 +27,7 @@ COPY ./certs/cert.pem /etc/nginx/certs/cert.pem
 COPY ./certs/privkey.pem /etc/nginx/certs/privkey.pem
 
 # Открываем порт 8443
-EXPOSE 8443
+EXPOSE 443
 
 # Запускаем Nginx
 CMD ["nginx", "-g", "daemon off;"]
