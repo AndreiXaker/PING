@@ -8,7 +8,43 @@ import { usersGame, limitBet } from '../../api/api';
 import { useState, useEffect } from 'react';
 import './GameRoom.css';
 import { FileQuestionIcon } from 'lucide-react';
+import styled from 'styled-components';
 
+export const ShinyTitle = styled.h4`
+  font-size: 3em;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.3);
+  background: #222 -webkit-gradient(
+      linear,
+      left top,
+      right top,
+      from(#222),
+      to(#222),
+      color-stop(0.5, #fff)
+    ) 0 0 no-repeat;
+  background-image: -webkit-linear-gradient(
+    -40deg,
+    transparent 0%,
+    transparent 40%,
+    #fff 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-background-size: 50px;
+  -webkit-animation: shineAnim 5s infinite;
+  @-webkit-keyframes shineAnim {
+    0%, 10% {
+      background-position: -200px;
+    }
+    20% {
+      background-position: top left;
+    }
+    100% {
+      background-position: 200px;
+    }
+  }
+`;
 
 interface GameRoomProps {
   maxPlayers: number;
@@ -101,15 +137,18 @@ export default function GameRoom({ maxPlayers, gameName }: GameRoomProps) {
   };
 
   return (
-    <Card bordered={false} className="game-room-card">
-      <div className="flex justify-between mb-4">
+    <Card bordered={false} bodyStyle={{padding : 3}} className="game-room-card">
+      <div className="flex items-center justify-between mb-4">
         <Card.Meta
-          // title={<Typography.Title level={4}>{gameName}</Typography.Title>}
+          className='items-center flex gap-2'
+          title={<ShinyTitle >{gameName}</ShinyTitle>}
         />
         <PlayerCountCard players={players} />
          <a
-          href={helpLinks[gameName === 'ThreeGames' ? 0 : gameName === 'SixGames' ? 2 : 1]}
+          href={helpLinks[gameName === 'G3ME' ? 0 : gameName === 'G6ME' ? 2 : 1]}
           className="question-icon"
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={(e) => {
             e.stopPropagation();
           }}

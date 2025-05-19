@@ -4,6 +4,7 @@ import { Button } from './ui/Button'
 import ping from "../component/ui/ping.gif";
 import { useWebSocketStore } from '../hooks/websocket';
 import { userLogin,getLastDeposits,getLastWithdrawals, SimpleTransaction } from '../api/api';
+import { ShinyTitle } from './game/game-room';
 
 
 export default function LeftSidebar() {
@@ -20,6 +21,8 @@ export default function LeftSidebar() {
   const fetchTransactions = async () => {
     const deposits = await getLastDeposits();
     const withdrawals = await getLastWithdrawals();
+    console.log(deposits)
+    console.log(withdrawals)
     if (deposits) setLastDeposits(deposits);
     if (withdrawals) setLastWithdrawals(withdrawals);
   };
@@ -50,7 +53,7 @@ export default function LeftSidebar() {
 
         <div className="rounded-lg bg-gray-800/50 p-4 flex flex-col items-center">
         {memoPhrase ? (
-          <p className="text-lg text-white font-bold text-center">Ваш id: {memoPhrase}</p>
+          <p className="text-lg text-white font-bold text-center">Ваш id: <ShinyTitle>{memoPhrase}</ShinyTitle></p>
         ) : (
           <Button
             className="text-lg text-white font-bold text-center"
@@ -78,7 +81,7 @@ export default function LeftSidebar() {
           </div>
         </div>
 
-        {/* Последние снятия */}
+        
         <div className="rounded-lg bg-gray-800/50 p-4">
           <h1 className="mb-2 font-semibold text-gray-400 flex items-center">
             <PlayCircle className="mr-2 h-4 w-4" />
@@ -100,11 +103,11 @@ export default function LeftSidebar() {
         <div className="rounded-lg bg-gray-800/50 p-4 flex flex-col items-center">
           <p className='text-lg text-white font-bold text-center'>Завершаются</p>
           {finishingGames.length > 0 ? (
-            <div className="space-y-2 mt-2">
+            <div className="space-y-6 mt-2">
               {finishingGames.map((game, index) => (
-                <Button key={index} className="flex text-lg items-center">
-                  {game.gameName} - {game.remainingTime} сек
-                </Button>
+                <div key={index} className="flex text-lg items-center">
+                  <ShinyTitle>{game.gameName}</ShinyTitle>
+                </div>
               ))}
             </div>
           ) : (
@@ -115,11 +118,11 @@ export default function LeftSidebar() {
         <div className="rounded-lg bg-gray-800/50 p-4">
           <p className='text-lg text-white font-bold text-center'>Новые</p>
           {newGames.length > 0 ? (
-            <div className="space-y-2 mt-2">
+            <div className="space-y-6 mt-2">
               {newGames.map((game, index) => (
-                <Button key={index} className="flex text-lg items-center">
-                  {game.game_name}
-                </Button>
+                <div key={index} className="flex text-lg items-center">
+                  <ShinyTitle>{game.game_name}</ShinyTitle>
+                </div>
               ))}
             </div>
           ) : (

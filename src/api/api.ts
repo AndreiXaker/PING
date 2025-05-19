@@ -183,6 +183,7 @@ export const qrCode = async (): Promise<string | null> => {
 export const getLastDeposits = async (): Promise<SimpleTransaction[] | null> => {
   try {
     const response = await apiClient.get("api/v1/last-deposits/");
+    console.log("Deposits raw response:", response.data);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return response.data.map((item: any) => ({
       amount: item.amount,
@@ -199,6 +200,7 @@ export const getLastDeposits = async (): Promise<SimpleTransaction[] | null> => 
 export const getLastWithdrawals = async (): Promise<SimpleTransaction[] | null> => {
   try {
     const response = await apiClient.get("api/v1/last-withdrawals/");
+    console.log("Deposits raw response:", response.data);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return response.data.map((item: any) => ({
       amount: item.amount,

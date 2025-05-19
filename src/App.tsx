@@ -33,15 +33,15 @@ const App = () => {
                   <main className="flex-1 p-4 text-white overflow-auto">
                     <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
                     <div className="space-y-6">
-                        <GameRoom maxPlayers={3} gameName="ThreeGames" />
+                        <GameRoom maxPlayers={3} gameName="G3ME" />
                          
                         <div className="flex justify-center bg-gray-800 rounded-xl p-6 shadow-xl">
                           <NewsletterForm />
                         </div>
                       </div>
 
-                      <GameRoom maxPlayers={6} gameName="SixGames" />
-                      <GameRoom maxPlayers={9} gameName="NineGames"  />
+                      <GameRoom maxPlayers={6} gameName="G6ME" />
+                      <GameRoom maxPlayers={9} gameName="G9ME"  />
                     </div>
 
                     {/* <div className="mt-6 rounded-lg bg-gray-800/50 p-4 backdrop-blur-sm">
