@@ -29,7 +29,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
 
   useEffect(() => {
   const fetchQr = async () => {
-    if (!isWithdraw) return;
+    if (isWithdraw) return;
     setQrLoading(true);
     try {
       const base64Image = await qrCode(); 
@@ -164,7 +164,22 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
             <img src={qrImage} alt="QR code" className="w-48 h-48 rounded border border-gray-600" />
           </div>
         )}
-        <p className="text-white font-bold justify-items-center">Телеграм id : {memoPhrase ? memoPhrase : 'Загрузка...'}</p>
+        {!isWithdraw && (
+          <div className="mt-4 space-y-4">
+            <div className="bg-gray-700 rounded-lg p-4">
+              <p className="text-gray-400 text-sm">Ваш Telegram ID:</p>
+              <p className="text-white font-mono text-lg break-all">
+                {memoPhrase ? memoPhrase : "Загрузка..."}
+              </p>
+            </div>
+            <div className="bg-gray-700 rounded-lg p-4">
+              <p className="text-gray-400 text-sm">Адрес для пополнения:</p>
+              <p className="text-white font-mono text-sm break-all">
+                UQAu3vPWa8lM4eWgzoZX78doLD3c6q5gXNWTzJ8lTdAENXzH
+              </p>
+            </div>
+          </div>
+        )}
         </div>
 
         {isWithdraw && (

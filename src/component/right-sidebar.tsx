@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { usersLoses, usersWins } from "../api/api";
 import { FileQuestionIcon } from "lucide-react";
-
 interface Win {
   game_name: string;
   cell_count: number;
@@ -22,11 +21,10 @@ interface Loss {
 
 
 export default function RightSidebar() {
-
   const [wins, setWins] = useState<Win[]>([]);
   const [losses, setLosses] = useState<Loss[]>([]);
   const [statsLoading, setStatsLoading] = useState(true);
-  const [statsError, setStatsError] = useState(false);
+  const [statsError, setStatsError] = useState(false)
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -66,6 +64,8 @@ export default function RightSidebar() {
                 <div className="text-white max-h-60 overflow-y-auto ">
                     <a
                     href="https://telegra.ph/Optimalnye-strategii-v-loteree-s-korobkami-kak-maksimizirovat-vyigrysh-05-06"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="question-icon absolute right-14 top-8"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -116,6 +116,7 @@ export default function RightSidebar() {
               {!card.hasButton && card.title !== "Статистика" && (
                 <p className="text-gray-400 text-sm">Coming soon</p>
               )}
+              
             </div>
           </div>
         ))}
