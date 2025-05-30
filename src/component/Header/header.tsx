@@ -4,7 +4,6 @@ const { Header } = Layout;
 import RadioSelector from "./radioSelector/RadioSelect";
 import BetLimitSelector from "./radioSelector/BetLimitSelector";
 import WalletBalance from "./Balance/Wallet";
-import ButtonIo from "../ui/ButtonIO";
 import ModalComponent from "../Modal";
 import { useGameStore } from "../../store/store";
 
@@ -53,7 +52,6 @@ export default function CustomHeader() {
       </div>
         <div className="flex items-center gap-4">
         <WalletBalance openModal={handleOpenModal}/>
-        <ButtonIo/>
         <ModalComponent isOpen={isModalOpen} onClose={handleCloseModal} onConfirm={handleCloseModal}/>
       </div>
     </Header>

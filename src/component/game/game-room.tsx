@@ -11,7 +11,7 @@ import { FileQuestionIcon } from 'lucide-react';
 import styled from 'styled-components';
 
 export const ShinyTitle = styled.h4`
-  font-size: 3em;
+  font-size: 2em;
   font-weight: 900;
   color: rgba(255, 255, 255, 0.3);
   background: #222 -webkit-gradient(

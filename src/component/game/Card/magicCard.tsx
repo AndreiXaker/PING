@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Card.css";
 import { FileQuestionIcon } from "lucide-react";
 interface MagicCardProps {
-  value: number;
+  value: string | number;
   onClick: () => void;
   helpLink?: string;
 }

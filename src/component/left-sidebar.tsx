@@ -53,7 +53,7 @@ export default function LeftSidebar() {
 
         <div className="rounded-lg bg-gray-800/50 p-4 flex flex-col items-center">
         {memoPhrase ? (
-          <p className="text-lg text-white font-bold text-center">Ваш id: <ShinyTitle>{memoPhrase}</ShinyTitle></p>
+          <p className="text-lg text-white font-bold text-center">Ваша мемофраза: <ShinyTitle>{memoPhrase}</ShinyTitle></p>
         ) : (
           <Button
             className="text-lg text-white font-bold text-center"
@@ -118,9 +118,9 @@ export default function LeftSidebar() {
         <div className="rounded-lg bg-gray-800/50 p-4">
           <p className='text-lg text-white font-bold text-center'>Новые</p>
           {newGames.length > 0 ? (
-            <div className="space-y-6 mt-2">
+            <div className="space-y-6 mt-2 text-center items-center">
               {newGames.map((game, index) => (
-                <div key={index} className="flex text-lg items-center">
+                <div key={index} className="text-lg items-center ">
                   <ShinyTitle>{game.game_name}</ShinyTitle>
                 </div>
               ))}
