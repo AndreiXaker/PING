@@ -14,7 +14,7 @@ const CardsList: React.FC<CardsListProps> = ({ maxPlayers, onCardClick }) => (
       {Array.from({ length: maxPlayers }).map((_, idx) => (
         <MagicCard
           key={idx}
-          value={'PING'}
+          value={idx + 1}
           onClick={() => onCardClick?.(idx + 1)}
         />
       ))}

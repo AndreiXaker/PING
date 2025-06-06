@@ -14,6 +14,7 @@ export interface IGameData {
   coin_symbol: string;
 }
 
+
 const apiClient = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL, 
     headers: {
@@ -212,3 +213,14 @@ export const getLastWithdrawals = async (): Promise<SimpleTransaction[] | null> 
     return null;
   }
 };
+
+//Получение кошелька 
+export const wallet = async () => {
+  try {
+    const response = await axios.get(import.meta.env.VITE_API_BASE_URL + '/coins/WALLETE/contract/')
+    return response.data
+  } catch (error) {
+    console.error("Ошибка при запросе:", error);
+    return null
+  };
+}

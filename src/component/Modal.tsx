@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDepositMutation } from "../hooks/useDeposit";
 import { message } from "antd";
-import { transfer, qrCode,userLogin } from "../api/api";
+import { transfer, qrCode,userLogin,wallet } from "../api/api";
 import { useCoinLimits } from "../hooks/useCoinLimits";
 interface ModalComponentProps {
   isOpen: boolean;
@@ -18,6 +18,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
   const [qrImage, setQrImage] = useState<string | null>(null);
   const [, setQrLoading] = useState<boolean>(false);
   const [memoPhrase, setMemoPhrase] = useState<string>("");
+  const [walletAddressFromApi, setWalletAddressFromApi] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchMemoPhrase = async () => {
@@ -26,6 +27,16 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
     }
     fetchMemoPhrase()
   },[])
+
+  useEffect(() => {
+    const fetchWallet = async() => {
+      const data = await wallet();
+      if (data?.contract_address){
+        setWalletAddressFromApi(data.contract_address)
+      }
+    }
+    fetchWallet()
+  })
 
   useEffect(() => {
   const fetchQr = async () => {
@@ -175,7 +186,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose, onConf
             <div className="bg-gray-700 rounded-lg p-4">
               <p className="text-gray-400 text-sm">Адрес для пополнения:</p>
               <p className="text-white font-mono text-sm break-all">
-                UQAu3vPWa8lM4eWgzoZX78doLD3c6q5gXNWTzJ8lTdAENXzH
+                {walletAddressFromApi ?? "Загрузка адреса кошелька..."}
               </p>
             </div>
           </div>
