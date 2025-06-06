@@ -105,7 +105,7 @@ export const usersGame = async (game_id: string, data: IGameData) => {
 // Ограничение ставки по криптовалюте
 export const limitBet = async () => {
   try {
-    const response = await axios.get("https://pingapp.tech/api/v1/games/api/v1/coin-bet-limits/")
+    const response = await axios.get("https://pinghub.online/api/v1/games/api/v1/coin-bet-limits/")
     return response.data;
   } catch (error) {
     console.error("Ошибка при запросе:", error);
