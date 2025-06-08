@@ -9,9 +9,9 @@ const NewsletterForm = () => {
   return (
     <StyledWrapper>
       <form className="form" onSubmit={handleSubmit}>
-        <span className="title">Подпишитесь на обновления</span>
+        <span className="text-center text-xl font-bold">СЛЕДИТЕ ЗА ОБНОВЛЕНИЯМИ</span>
         <p className="description">
-          Получайте эксклюзивные предложения и новости о новых играх первыми!
+          Задайте вопрос администрации.
         </p>
         <div>
           <input 
@@ -20,7 +20,12 @@ const NewsletterForm = () => {
             name="email" 
             required
           />
-          <button type="submit">Подписаться</button>
+          <a 
+          className="subscribe-button"
+          href='https://t.me/the_ping'
+          target="_blank"
+          rel="noopener noreferrer"
+          >Подписаться</a>
         </div>
       </form>
     </StyledWrapper>
@@ -29,7 +34,24 @@ const NewsletterForm = () => {
 
 const StyledWrapper = styled.div`
   margin-top: 2rem;
-  
+
+  .subscribe-button {
+  padding: 0.75rem 1.5rem;
+  background: #6366f1;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #4f46e5;
+  }
+}
   .form {
     display: flex;
     flex-direction: column;
